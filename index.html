@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>工作汇报 - 战略概览</title>
+    <title>邓广坚 - 产品工作双周汇报</title>
     <style>
         /* 全局重置 */
         body {
@@ -10,37 +10,59 @@
             color: #333;
             margin: 0;
             padding: 0;
-            background-color: #eef2f6; 
+            background: linear-gradient(180deg, #ffffff 40%, #e6f4ff 100%);
             display: flex;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* --- 侧边栏 (调整对齐要求一) --- */
+        /* --- 侧边栏 --- */
         .sidebar {
-            width: 180px;
-            background-color: #fff;
+            width: 210px; 
+            background: transparent;
             flex-shrink: 0;
             height: 100vh;
-            border-right: 1px solid #dbe2e8;
-            /* 40px(section padding) + 35px(paper padding) + 标题高度补偿 ≈ 78px */
-            padding-top: 78px; 
+            border-right: 1px solid #dbe2e8; 
+            padding-top: 45px;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
         }
+
+        /* 侧边栏头部信息 */
+        .sidebar-header {
+            padding: 0 25px 21px 25px; 
+            border-bottom: 2px solid #f0f2f5; 
+            margin-bottom: 20px;
+        }
+        .sidebar-header .name {
+            font-size: 22px; 
+            font-weight: 700; 
+            color: #1890ff; 
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        .sidebar-header .role {
+            font-size: 16px; 
+            color: #333; 
+            font-weight: 700; 
+            line-height: 1.6; 
+        }
+
         .sidebar-nav ul { list-style-type: none; padding: 0; margin: 0; }
         .sidebar-nav ul li a {
             display: flex;
             align-items: center;
-            padding: 12px 25px;
+            padding: 15px 25px;
             text-decoration: none;
-            color: #666;
+            color: #555;
             transition: all 0.2s;
             border-left: 4px solid transparent;
-            font-size: 15px;
+            font-size: 17px;
             font-weight: 500;
         }
-        .sidebar-nav ul li a.active { background-color: #e6f7ff; color: #1890ff; border-left-color: #1890ff; }
-        .sidebar-nav ul li a svg { width: 18px; height: 18px; margin-right: 12px; fill: currentColor; }
+        .sidebar-nav ul li a.active { background-color: rgba(24, 144, 255, 0.08); color: #1890ff; border-left-color: #1890ff; }
+        .sidebar-nav ul li a svg { width: 24px; height: 24px; margin-right: 12px; }
 
         /* --- 主内容区 --- */
         .main-content {
@@ -58,25 +80,28 @@
             padding: 40px 50px; 
             box-sizing: border-box;
             display: flex;
-            justify-content: center;
-            align-items: flex-start; 
+            flex-direction: column; 
+            align-items: center; 
             scroll-snap-align: start;
             scroll-snap-stop: always;
         }
 
-        /* --- 汇报大框 --- */
+        /* --- 汇报大框 (白色页面) --- */
         .report-paper {
             background: #fff;
             width: 100%;
             max-width: 1300px;
             height: 72vh; 
             border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
             border: 1px solid #dee5ed;
-            padding: 35px 45px;
+            padding: 40px 50px;
             display: flex;
             flex-direction: column;
             overflow: hidden; 
+            position: relative; 
+            margin-bottom: 20px; 
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(24, 144, 255, 0.12);
         }
 
         /* --- 标题栏 --- */
@@ -84,136 +109,207 @@
             display: flex;
             align-items: center;
             border-bottom: 2px solid #f0f2f5;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            padding-bottom: 20px;
+            margin-bottom: 30px; 
             flex-shrink: 0;
-            height: 32px; /* 固定标题高度以辅助对齐 */
         }
-        .report-header h1 { font-size: 22px; margin: 0; color: #1a1a1a; font-weight: 600; line-height: 1; }
-        .report-header .divider { margin: 0 15px; color: #d1d9e0; font-size: 18px; }
-        .report-header h2 { font-size: 16px; margin: 0; color: #1890ff; font-weight: 500; line-height: 1; }
+        .report-header h1 { font-size: 26px; margin: 0; color: #1a1a1a; font-weight: 600; line-height: 1; }
+        
+        /* --- 内部卡片动效 --- */
+        .hover-trigger {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .hover-trigger:hover {
+            transform: translateY(-8px) scale(1.03); 
+            box-shadow: 0 15px 30px rgba(24, 144, 255, 0.15);
+            border-color: #bae7ff;
+            z-index: 5;
+        }
+        .progress-card.hover-trigger:hover {
+            transform: translateY(-12px) scale(1.08); 
+            box-shadow: 0 25px 45px rgba(24, 144, 255, 0.2);
+            z-index: 10;
+        }
+        .tier-a.hover-trigger:hover { box-shadow: 0 15px 30px rgba(82, 196, 26, 0.25); border-color: #b7eb8f; }
+        .tier-b.hover-trigger:hover { box-shadow: 0 15px 30px rgba(250, 173, 20, 0.25); border-color: #ffe58f; }
+        .tier-c.hover-trigger:hover { box-shadow: 0 15px 30px rgba(245, 34, 45, 0.25); border-color: #ffccc7; }
 
         /* --- 第1页：项目进度 --- */
         .progress-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-rows: 1fr 1fr; 
+            gap: 30px; 
+            flex-grow: 1; 
+            margin-bottom: 10px; 
         }
         .progress-card {
             background: #fff;
             border: 1px solid #eef2f8;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; 
         }
         .progress-card h3 { 
-            margin: 0 0 12px 0; 
-            font-size: 17px; 
+            margin: 0 0 18px 0; 
+            font-size: 20px; 
             color: #1890ff; 
             display: flex; 
             align-items: center;
         }
         .progress-card h3::before {
-            content: ""; display: inline-block; width: 4px; height: 16px; 
-            background: #1890ff; margin-right: 10px; border-radius: 2px;
+            content: ""; display: inline-block; width: 5px; height: 20px; 
+            background: #1890ff; margin-right: 12px; border-radius: 2px;
         }
         .progress-list { list-style: none; padding: 0; margin: 0; }
         .progress-list li {
-            padding: 10px 15px;
+            padding: 12px 18px;
             background: #f8f9fb;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            font-size: 13px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 15px; 
             color: #444;
+            line-height: 1.6;
         }
 
         /* --- 第2页：战略评级 --- */
         .ratings-wrapper {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
-            flex-grow: 1;
+            gap: 15px;
+            flex-grow: 1; 
+            margin-bottom: 20px;
+            align-items: stretch; 
         }
         .rating-item {
             border-radius: 10px;
-            padding: 20px 10px;
+            padding: 20px 10px; 
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             text-align: center;
             border: 1px solid #f0f0f0;
             background: #fff;
             position: relative;
+            min-height: 0; 
         }
-        .rating-item.clickable { cursor: pointer; transition: transform 0.2s; }
-        .rating-item.clickable:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .rating-item strong { font-size: 15px; color: #333; height: 40px; display: flex; align-items: center; justify-content: center; }
-        .rating-item .score { font-size: 38px; font-weight: 800; line-height: 1; margin: 30px 0 5px; }
-        .rating-item .tier { font-size: 11px; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px; }
-        .rating-item .details { 
-            background: #f4f6f8; 
-            border-radius: 8px; 
-            padding: 12px 5px; 
-            font-size: 11px; 
-            color: #666; 
+        .rating-item.clickable { cursor: pointer; } 
+        
+        .rating-item strong { 
+            font-size: 16px; 
+            color: #333; 
+            height: 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            margin-bottom: 15px;
+            line-height: 1.2;
         }
-        .rating-item .details span {
-            display: block;
-            border-bottom: 1px solid #e6e9ed;
-            padding: 5px 0;
-        }
-        .rating-item .details span:last-child { border-bottom: none; }
 
-        .tier-a { border-top: 5px solid #52c41a; background: linear-gradient(180deg, #f6ffed 0%, #ffffff 60px); }
+        .rating-main-info {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px; 
+        }
+        .rating-item .tier { 
+            font-size: 18px; 
+            font-weight: 800; 
+            letter-spacing: 0.5px;
+            order: 1; 
+            margin-bottom: 8px;
+        }
+        .rating-item .score { 
+            font-size: 22px; 
+            font-weight: 800; 
+            line-height: 1; 
+            order: 2; 
+        }
+
+        .rating-item .details { 
+            background: transparent; 
+            padding: 10px 0; 
+            margin-top: auto; 
+            font-size: 15px; 
+            color: #333; 
+            line-height: 1.6; 
+            font-weight: 400;
+        }
+        .rating-item .details span { display: block; padding: 2px 0; }
+        .tier-a { border-top: 5px solid #52c41a; background: linear-gradient(180deg, #f6ffed 0%, #ffffff 50px); }
         .tier-a .score, .tier-a .tier { color: #52c41a; }
-        .tier-b { border-top: 5px solid #faad14; background: linear-gradient(180deg, #fffbe6 0%, #ffffff 60px); }
+        .tier-b { border-top: 5px solid #faad14; background: linear-gradient(180deg, #fffbe6 0%, #ffffff 50px); }
         .tier-b .score, .tier-b .tier { color: #faad14; }
-        .tier-c { border-top: 5px solid #f5222d; background: linear-gradient(180deg, #fff1f0 0%, #ffffff 60px); }
+        .tier-c { border-top: 5px solid #f5222d; background: linear-gradient(180deg, #fff1f0 0%, #ffffff 50px); }
         .tier-c .score, .tier-c .tier { color: #f5222d; }
 
-        /* --- 第3页：具体分析 (调整颜色要求二) --- */
+        /* --- 第3页：具体分析 --- */
+        .page-3-layout {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; 
+        }
         .analysis-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
+            gap: 40px; 
+            margin-bottom: 30px;
         }
         .analysis-card {
             background: #fff;
             border: 1px solid #eef2f8;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 30px; 
+            border-radius: 12px;
         }
-        .analysis-card h3 { margin: 0 0 15px 0; font-size: 17px; }
-        .analysis-card p { font-size: 13px; margin-bottom: 10px; display: flex; align-items: center; }
+        .analysis-card h3 { margin: 0 0 20px 0; font-size: 20px; color: #333; }
+        .analysis-card p { 
+            font-size: 16px; margin-bottom: 15px; 
+            display: flex; align-items: center; color: #555;
+        }
         .score-tag { 
             background: #e6f7ff; color: #1890ff; font-weight: 700; 
-            padding: 2px 8px; border-radius: 4px; margin-right: 10px; font-size: 12px;
-            border: 1px solid #91d5ff;
+            padding: 4px 10px; border-radius: 4px; margin-right: 15px; font-size: 14px; 
+            border: 1px solid #91d5ff; min-width: 35px; text-align: center;
         }
-        /* 明亮化的总结框 */
+        
         .summary-box {
-            background: #f0f7ff;
-            padding: 22px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #f8fbff 0%, #eef6ff 100%);
+            padding: 30px; 
+            border-radius: 12px;
             color: #003a8c;
-            border-left: 5px solid #1890ff;
-            border-top: 1px solid #bae7ff;
-            border-right: 1px solid #bae7ff;
-            border-bottom: 1px solid #bae7ff;
+            border-left: 6px solid #1890ff;
+            border: 1px solid #bae7ff;
+            border-left-width: 6px;
+            margin-bottom: auto; 
         }
-        .summary-box h3 { margin: 0 0 10px 0; font-size: 16px; color: #0050b3; }
-        .summary-box ul { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.8; }
+        .summary-box h3 { margin: 0 0 15px 0; font-size: 18px; color: #0050b3; }
+        .summary-box ul { margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.8; }
 
     </style>
 </head>
 <body>
 
     <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="name">邓广坚</div>
+            <div class="role">产品工作双周汇报</div>
+        </div>
+
         <nav class="sidebar-nav">
             <ul>
-                <li><a href="#section-progress" class="active"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>项目进度</a></li>
-                <li><a href="#section-ratings"><svg viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>战略评级</a></li>
-                <li><a href="#section-analysis"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>具体分析</a></li>
+                <li><a href="#section-progress" class="active">
+                    <svg viewBox="0 0 24 24" fill="#1890ff"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                    项目进度
+                </a></li>
+                <li><a href="#section-ratings">
+                    <svg viewBox="0 0 24 24" fill="#722ed1"><path d="M12 2l-9 4v12l9 4 9-4V6l-9-4zm0 2.5l7 3.11V11h-2.5l-1.5-3-3 6-3-6-1.5 3H5V7.61L12 4.5zM7 16l1.5-3h7l1.5 3H7z" opacity="0.3"/><path d="M12 2L3 6v12l9 4 9-4V6l-9-4zm0 2.5l7 3.11V11h-2.5l-1.5-3-3 6-3-6-1.5 3H5V7.61L12 4.5zM17 16H7l1.5-3h7l1.5 3z"/></svg>
+                    产品战略审视
+                </a></li>
+                <li><a href="#section-analysis">
+                    <svg viewBox="0 0 24 24" fill="#fa8c16"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/></svg>
+                    具体分析
+                </a></li>
             </ul>
         </nav>
     </div>
@@ -224,119 +320,189 @@
         <div id="section-progress" class="section-container">
             <div class="report-paper">
                 <div class="report-header">
-                    <h1>家电二组工作汇报</h1>
-                    <span class="divider">/</span>
-                    <h2>项目进度</h2>
+                    <h1>项目进度</h1>
                 </div>
                 <div class="progress-grid">
-                    <div class="progress-card">
+                    <div class="progress-card hover-trigger">
                         <h3>美甲集尘器</h3>
                         <ul class="progress-list">
-                            <li>2款ODMA已通过PDCP，正在推进TR4A下单。</li>
-                            <li>IRDA静音款已在ID设计阶段，下周二出第一版方案。</li>
+                            <li>2款ODMA已通过PDCP，正在推进TR4A下单</li>
+                            <li>IRDA静音款已在ID设计阶段，下周二出第一版方案</li>
                         </ul>
                     </div>
-                    <div class="progress-card">
+                    <div class="progress-card hover-trigger">
                         <h3>除螨吸尘器</h3>
                         <ul class="progress-list">
-                            <li>2款ODMA正在TR4功能性测试，已反馈厂家整改。</li>
-                            <li>IRDA款完成了无刷电机的样机，准备性能测试。</li>
+                            <li>2款ODMA正在TR4功能性测试，问题已反馈厂家整改</li>
+                            <li>IRDA款完成了无刷电机的样机，准备性能测试</li>
                         </ul>
                     </div>
-                    <div class="progress-card">
+                    <div class="progress-card hover-trigger">
                         <h3>高速电吹风</h3>
                         <ul class="progress-list">
-                            <li>3款ODMA已通过TR2验证，正在同步PRD文档。</li>
+                            <li>3款ODMA已通过TR2验证，正在完善PRD文档</li>
+                            <li>IRDA款正在打磨概念</li>
                         </ul>
                     </div>
-                    <div class="progress-card">
+                    <div class="progress-card hover-trigger">
                         <h3>扩香机</h3>
                         <ul class="progress-list">
-                            <li>Charter已完成，计划本月中旬发起TR1申请。</li>
+                            <li>Charter已完成，计划本月下旬发起TR1评审</li>
                         </ul>
                     </div>
                 </div>
             </div>
+            <!-- 底部导航已移除 -->
         </div>
 
-        <!-- 第二页：战略评级 -->
+        <!-- 第二页：产品战略审视 -->
         <div id="section-ratings" class="section-container">
             <div class="report-paper">
                 <div class="report-header">
-                    <h1>家电二组工作汇报</h1>
-                    <span class="divider">/</span>
-                    <h2>战略评级一览</h2>
+                    <h1>战略评级一览</h1>
                 </div>
                 <div class="ratings-wrapper">
-                    <div class="rating-item tier-a">
+                    
+                    <div class="rating-item tier-a hover-trigger">
                         <strong>光疗面罩</strong>
-                        <div class="score">6.5</div><div class="tier">TIER A</div>
-                        <div class="details"><span>AMZ 9.05 | TT 8</span><span>大型市场 | 蓝海</span><span>高速增长</span><span>新品活跃度 62.3%</span></div>
+                        <div class="rating-main-info">
+                            <div class="tier">TIER A</div>
+                            <div class="score">6.5</div>
+                        </div>
+                        <div class="details">
+                            <span>AMZ 9.05 | TT 8</span>
+                            <span>大型市场</span>
+                            <span>蓝海</span>
+                            <span>高速增长</span>
+                            <span>新品活跃度 62.3%</span>
+                        </div>
                     </div>
-                    <div class="rating-item tier-a">
+                    
+                    <div class="rating-item tier-a hover-trigger">
                         <strong>扩香机</strong>
-                        <div class="score">7.5</div><div class="tier">TIER A</div>
-                        <div class="details"><span>AMZ 7.73 | TT 7</span><span>中型市场 | 蓝海</span><span>潜力增长</span><span>新品活跃度 31.2%</span></div>
+                        <div class="rating-main-info">
+                            <div class="tier">TIER A</div>
+                            <div class="score">7.5</div>
+                        </div>
+                        <div class="details">
+                            <span>AMZ 7.73 | TT 7</span>
+                            <span>中型市场</span>
+                            <span>蓝海</span>
+                            <span>潜力增长</span>
+                            <span>新品活跃度 31.2%</span>
+                        </div>
                     </div>
-                    <div class="rating-item tier-a">
+                    
+                    <div class="rating-item tier-a hover-trigger">
                         <strong>香氛扩香油</strong>
-                        <div class="score">8.2</div><div class="tier">TIER A</div>
-                        <div class="details"><span>AMZ 7.18 | TT 6</span><span>中型市场 | 黄海</span><span>潜力增长</span><span>新品活跃度 7.4%</span></div>
+                        <div class="rating-main-info">
+                            <div class="tier">TIER A</div>
+                            <div class="score">8.2</div>
+                        </div>
+                        <div class="details">
+                            <span>AMZ 7.18 | TT 6</span>
+                            <span>中型市场</span>
+                            <span>黄海</span>
+                            <span>潜力增长</span>
+                            <span>新品活跃度 7.4%</span>
+                        </div>
                     </div>
-                    <div class="rating-item tier-a">
+                    
+                    <div class="rating-item tier-a hover-trigger">
                         <strong>红光腰带</strong>
-                        <div class="score">7.2</div><div class="tier">TIER A</div>
-                        <div class="details"><span>AMZ 8.8 | TT 7</span><span>中型市场 | 蓝海</span><span>高速增长</span><span>新品活跃度 36.6%</span></div>
+                        <div class="rating-main-info">
+                            <div class="tier">TIER A</div>
+                            <div class="score">7.2</div>
+                        </div>
+                        <div class="details">
+                            <span>AMZ 8.8 | TT 7</span>
+                            <span>中型市场</span>
+                            <span>蓝海</span>
+                            <span>高速增长</span>
+                            <span>新品活跃度 36.6%</span>
+                        </div>
                     </div>
-                    <div class="rating-item tier-a">
+                    
+                    <div class="rating-item tier-a hover-trigger">
                         <strong>IPL脱毛仪</strong>
-                        <div class="score">7.2</div><div class="tier">TIER A</div>
-                        <div class="details"><span>AMZ 8.13 | TT 9</span><span>大型市场 | 黄海</span><span>稳定增长</span><span>新品活跃度 36.5%</span></div>
+                        <div class="rating-main-info">
+                            <div class="tier">TIER A</div>
+                            <div class="score">7.2</div>
+                        </div>
+                        <div class="details">
+                            <span>AMZ 8.13 | TT 9</span>
+                            <span>大型市场</span>
+                            <span>黄海</span>
+                            <span>稳定增长</span>
+                            <span>新品活跃度 36.5%</span>
+                        </div>
                     </div>
-                    <div class="rating-item tier-b clickable" onclick="document.getElementById('section-analysis').scrollIntoView({behavior: 'smooth'})">
-                        <strong>头戴式耳机</strong>
-                        <div class="score">5.5</div><div class="tier">TIER B</div>
-                        <div class="details"><span>AMZ 9.35 | TT 8</span><span>超大型 | 蓝海</span><span>波动增长</span><span>新品活跃度 12.3%</span></div>
+                    
+                    <div class="rating-item tier-b clickable hover-trigger" onclick="document.getElementById('section-analysis').scrollIntoView({behavior: 'smooth'})">
+                        <strong>头戴式降噪耳机</strong>
+                        <div class="rating-main-info">
+                            <div class="tier">TIER B</div>
+                            <div class="score">5.5</div>
+                        </div>
+                        <div class="details">
+                            <span>AMZ 9.35 | TT 8</span>
+                            <span>超大型</span>
+                            <span>蓝海</span>
+                            <span>波动增长</span>
+                            <span>新品活跃度 12.3%</span>
+                        </div>
                     </div>
-                    <div class="rating-item tier-c clickable" onclick="document.getElementById('section-analysis').scrollIntoView({behavior: 'smooth'})">
-                        <strong>往复剃须刀</strong>
-                        <div class="score">4.2</div><div class="tier">TIER C</div>
-                        <div class="details"><span>AMZ 8.85 | TT 8</span><span>大型市场 | 黄海</span><span>稳定增长</span><span>新品活跃度 16.4%</span></div>
+                    
+                    <div class="rating-item tier-c clickable hover-trigger" onclick="document.getElementById('section-analysis').scrollIntoView({behavior: 'smooth'})">
+                        <strong>往复式剃须刀</strong>
+                        <div class="rating-main-info">
+                            <div class="tier">TIER C</div>
+                            <div class="score">4.2</div>
+                        </div>
+                        <div class="details">
+                            <span>AMZ 8.85 | TT 8</span>
+                            <span>大型市场</span>
+                            <span>黄海</span>
+                            <span>稳定增长</span>
+                            <span>新品活跃度 16.4%</span>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- 底部导航已移除 -->
         </div>
 
         <!-- 第三页：具体分析 -->
         <div id="section-analysis" class="section-container">
             <div class="report-paper">
                 <div class="report-header">
-                    <h1>家电二组工作汇报</h1>
-                    <span class="divider">/</span>
-                    <h2>具体分析</h2>
+                    <h1>具体分析</h1>
                 </div>
-                <div class="analysis-container">
-                    <div class="analysis-card">
-                        <h3>头戴式降噪耳机</h3>
-                        <p><span class="score-tag">5.0</span> 技术: 核心技术缺失，难成壁垒</p>
-                        <p><span class="score-tag">6.0</span> 体验: 设计体验良好，但难以穿透心智</p>
-                        <p><span class="score-tag">5.5</span> 商业: 高投入、低毛利、供应风险</p>
+                <div class="page-3-layout">
+                    <div class="analysis-container">
+                        <div class="analysis-card hover-trigger">
+                            <h3>头戴式降噪耳机</h3>
+                            <p><span class="score-tag">5.0</span> 技术: 声学算法、芯片能力缺失，难成壁垒</p>
+                            <p><span class="score-tag">6.0</span> 体验: 设计体验良好，但难透心智</p>
+                            <p><span class="score-tag">5.5</span> 商业: 高营销投入、低毛利、高供应链风险</p>
+                        </div>
+                        <div class="analysis-card hover-trigger">
+                            <h3>往复式剃须刀</h3>
+                            <p><span class="score-tag">5.0</span> 技术: 能集成，无突破性差异</p>
+                            <p><span class="score-tag">4.0</span> 体验: 难破品牌心智，体验无惊喜</p>
+                            <p><span class="score-tag">6.0</span> 商业: 能卖货，难赚钱</p>
+                        </div>
                     </div>
-                    <div class="analysis-card">
-                        <h3>往复式剃须刀</h3>
-                        <p><span class="score-tag">5.0</span> 技术: 能集成，无突破性差异</p>
-                        <p><span class="score-tag">4.0</span> 体验: 难破品牌心智，体验无惊喜</p>
-                        <p><span class="score-tag">6.0</span> 商业: 能卖货，难赚钱</p>
+                    <div class="summary-box hover-trigger">
+                        <h3>核心错位总结</h3>
+                        <ul>
+                            <li>品牌驱动远大于技术驱动的市场，容易亏钱换规模</li>
+                            <li>底层核心技术不掌握在手，无法在激烈的市场竞争中通过产品力实现溢价</li>
+                        </ul>
                     </div>
-                </div>
-                <div class="summary-box">
-                    <h3>核心错位总结</h3>
-                    <ul>
-                        <li>品牌驱动力远大于技术驱动的市场，入场壁垒被严重低估，导致资源错配。</li>
-                        <li>底层核心技术不掌握在手，无法在激烈的市场竞争中通过产品力实现价格溢价。</li>
-                    </ul>
                 </div>
             </div>
+            <!-- 底部导航已移除 -->
         </div>
 
     </div>
@@ -351,7 +517,7 @@
                 let current = '';
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop;
-                    if (mainContent.scrollTop >= (sectionTop - section.clientHeight / 3)) {
+                    if (mainContent.scrollTop >= (sectionTop - section.clientHeight / 2)) {
                         current = section.getAttribute('id');
                     }
                 });
@@ -363,11 +529,16 @@
                 });
             });
 
-            navLinks.forEach(link => {
+            // 侧边栏的平滑滚动
+            const smoothScrollLinks = document.querySelectorAll('.sidebar-nav ul li a');
+            smoothScrollLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const targetId = link.getAttribute('href').substring(1);
-                    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+                    const href = link.getAttribute('href');
+                    if(href) {
+                        const targetId = href.substring(1);
+                        document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+                    }
                 });
             });
         });
